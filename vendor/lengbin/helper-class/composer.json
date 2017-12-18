@@ -1,0 +1,34 @@
+{
+    "name": "lengbin/helper-class",
+    "description": "this is my collection helper class",
+    "license": "MIT",
+    "require": {
+        "phpoffice/phpexcel": "^1.8",
+        "php": ">=5.3.0"
+    },
+
+    "minimum-stability": "stable",
+
+    "autoload": {
+        "psr-4": {
+            "lengbin\\helper\\directory\\": "src/directory",
+            "lengbin\\helper\\upload\\": "src/upload",
+            "lengbin\\helper\\excel\\": "src/excel",
+            "lengbin\\helper\\curl\\": "src/curl",
+            "lengbin\\helper\\number\\": "src/number",
+            "lengbin\\helper\\pinyin\\": "src/pinyin",
+            "lengbin\\helper\\util\\": "src/util",
+            "lengbin\\helper\\sender\\": "src/sender",
+            "lengbin\\helper\\math\\": "src/math",
+            "lengbin\\helper\\image\\": "src/image",
+            "lengbin\\helper\\mysql\\": "src/mysql",
+            "lengbin\\helper\\yii2\\": "src/yii2"
+        }
+    },
+    "authors": [
+        {
+            "name": "lengbin",
+            "email": "xykxyk2008@163.com"
+        }
+    ]
+}
