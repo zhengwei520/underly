@@ -23,9 +23,16 @@ class SiteController extends WebController
 
     public function actionIndex()
     {
+
         $this->layout = 'login';
+        $model = $this->user->user;
+        if(Yii::$app->request->isPost){
+            $params = Yii::$app->request->post();
+            var_dump($params);
+            die;
+        }
         return $this->render('index', [
-            'model' => $this->user->user
+            'model' => $model
         ]);
     }
 }

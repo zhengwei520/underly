@@ -3,6 +3,7 @@
 $this->title = 'a';
 ?>
 
+<body class="gray-bg">
 <div>
     <h1 class="logo-name">心连网</h1>
 </div>
@@ -31,3 +32,5 @@ echo \yii\helpers\Html::submitButton('登 录', [
         <small>忘记密码了？</small>
     </a> | <a href="register.html">注册一个新账号</a>
 </p>
+
+</body>
