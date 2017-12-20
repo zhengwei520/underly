@@ -16,7 +16,6 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-        \Yii::$app->session->setFlash('danger', ['Error 1', 'Error 2']);
         return $this->render('index');
     }
 }
