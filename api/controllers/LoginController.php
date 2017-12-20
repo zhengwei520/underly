@@ -32,8 +32,8 @@ class LoginController extends RestController
      */
     public function actionIndex()
     {
-        //$params = \Yii::$app->request->post();
-        $params = \Yii::$app->request->get();
+        $params = \Yii::$app->request->post();
+//        $params = \Yii::$app->request->get();
         $data = $this->validateRequestParams($params, [
             'account',
             'password',

@@ -1,6 +1,6 @@
 <?php
 
-$this->title = 'a';
+$this->title = '登录';
 ?>
 
 <body class="gray-bg">
@@ -28,9 +28,9 @@ echo \yii\helpers\Html::submitButton('登 录', [
 
 ?>
 
-<p class="text-muted text-center"><a href="login.html#">
-        <small>忘记密码了？</small>
-    </a> | <a href="register.html">注册一个新账号</a>
-</p>
+<!--<p class="text-muted text-center"><a href="login.html#">-->
+<!--        <small>忘记密码了？</small>-->
+<!--    </a> | <a href="register.html">注册一个新账号</a>-->
+<!--</p>-->
 
 </body>

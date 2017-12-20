@@ -6,6 +6,8 @@ $params = array_merge(
     require(__DIR__ . '/params-local.php')
 );
 
+$modules =  require(__DIR__ . '/modules.php');
+
 return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
@@ -44,5 +46,6 @@ return [
             ],
         ],
     ],
-    'params' => $params,
+    'params'  => $params,
+    'modules' => $modules,
 ];

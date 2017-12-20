@@ -53,7 +53,8 @@ class User extends \common\core\server\ActiveRecord implements IdentityInterface
             [['email', 'face'], 'string', 'max' => 255],
             [['email'], 'email'],
             [['mobile'], MobileValidator::className()],
-            [['account', 'mobile', 'email'], 'unique', 'on' => 'register']
+            [['account', 'mobile', 'email'], 'unique', 'on' => 'register'],
+            [['password'], 'validatePasswordRole', 'on' => 'login']
         ];
     }
 
@@ -88,7 +89,7 @@ class User extends \common\core\server\ActiveRecord implements IdentityInterface
      */
     public function validatePasswordRole($attribute, $params)
     {
-        if (!$this->hasErrors() && !$this->isNewRecord) {
+        if (!$this->hasErrors()) {
             $user = $this->getUserOne(['account' => $this->account]);
             if (!$user || !$user->validatePassword($this->password, $user->password)) {
                 $this->addError($attribute, '无效账号或密码.');

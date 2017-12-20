@@ -23,13 +23,14 @@ class SiteController extends WebController
 
     public function actionIndex()
     {
-
         $this->layout = 'login';
         $model = $this->user->user;
         if(Yii::$app->request->isPost){
             $params = Yii::$app->request->post();
-            var_dump($params);
-            die;
+            $model = $this->user->login($params);
+            if($model->validate()){
+                return $this->redirect(Yii::$app->urlManager->createUrl('dashboard'));
+            }
         }
         return $this->render('index', [
             'model' => $model

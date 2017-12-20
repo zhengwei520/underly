@@ -38,8 +38,8 @@ class UserImpl extends BaseServer implements UserInterface
      */
     public function login(array $params, $isApi = false)
     {
-        $this->user->scenario = 'login';
         $token = [];
+        $model = $this->user;
         if ($isApi) {
             $model = $this->user->getUserOne([
                 'account' => $params['account'],
@@ -52,12 +52,13 @@ class UserImpl extends BaseServer implements UserInterface
             }
             $token = (new UserToken())->makeToken($model, $params['app_id']);
         } else {
-            $model = $this->user->load($params);
+            $model->scenario = 'login';
+            $model->load($params);
         }
         if ($model->validate()) {
             \Yii::$app->user->login($this->user->getUserOne([
-                'account' => $params['account'],
-            ]));
+                'account' => $model->account,
+            ]), \Yii::$app->params['user.expires_in']);
         }
         return $isApi ? $token : $model;
     }
