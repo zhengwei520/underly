@@ -11,10 +11,8 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use backend\assets\HplusAsset;
 use yii\helpers\Html;
 
-HplusAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
     <!DOCTYPE html>
@@ -26,10 +24,8 @@ HplusAsset::register($this);
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
     </head>
-    <body>
-    <?php $this->beginBody() ?>
-        <?= $content ?>
-    <?php $this->endBody() ?>
-    </body>
+        <?php $this->beginBody() ?>
+            <?= $content ?>
+        <?php $this->endBody() ?>
     </html>
-<?php $this->endPage() ?>z
+<?php $this->endPage() ?>

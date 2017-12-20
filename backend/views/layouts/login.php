@@ -1,18 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: lengbin
- * Date: 2017/12/17
- * Time: 下午9:25
- */
+
+\common\assets\HplusLoginAsset::register($this);
 ?>
 
 <?php $this->beginContent('@app/views/layouts/base.php'); ?>
-
-    <div class="middle-box text-center loginscreen  animated fadeInDown">
-        <div>
-            <?= $content ?>
+    <body class="gray-bg">
+        <div class="middle-box text-center loginscreen  animated fadeInDown">
+            <div>
+                <?= $content ?>
+            </div>
         </div>
-    </div>
-
+    </body>
 <?php $this->endContent(); ?>
