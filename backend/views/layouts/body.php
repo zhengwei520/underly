@@ -1,7 +1,7 @@
 <?php
 
 
-\common\assets\HplusMainAsset::register($this);
+\backend\assets\HplusBodyAsset::register($this);
 
 $this->beginContent('@app/views/layouts/base.php');
 

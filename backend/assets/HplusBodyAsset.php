@@ -6,12 +6,12 @@
  * Time: 下午7:59
  */
 
-namespace common\assets;
+namespace backend\assets;
 
 
 use yii\web\AssetBundle;
 
-class HplusMainAsset extends AssetBundle
+class HplusBodyAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
