@@ -1,27 +1,63 @@
 <?php
 
+use yii\widgets\Breadcrumbs;
+use common\widgets\Alert;
 
 \backend\assets\HplusBodyAsset::register($this);
 
 $this->beginContent('@app/views/layouts/base.php');
 
+//Breadcrumbs::widget([
+//    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+//]);
+//
+//Alert::widget();
+
 ?>
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
     <div id="wrapper">
         <!--左侧导航开始-->
-        <?php
-        echo $this->render('_nav');
-        ?>
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="nav-close">
+                <i class="fa fa-times-circle"></i>
+            </div>
+            <div class="sidebar-collapse">
+                <ul class="nav" >
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                            <span><img alt="image" class="img-circle" src="img/profile_small.jpg" /></span>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span class="clear">
+                               <span class="block m-t-xs"><strong class="font-bold">Beaut-zihan</strong></span>
+                                <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a class="J_menuItem" href="form_avatar.html">修改头像</a>
+                                </li>
+                                <li><a class="J_menuItem" href="profile.html">个人资料</a>
+                                </li>
+                                <li><a class="J_menuItem" href="contacts.html">联系我们</a>
+                                </li>
+                                <li><a class="J_menuItem" href="mailbox.html">信箱</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li><a href="login.html">安全退出</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                <!-- 导航 -->
+                <?= \common\core\widget\hplus\nav\Nav::widget(); ?>
+                <!-- 导航 -->
+            </div>
+        </nav>
         <!--左侧导航结束-->
         <!--右侧部分开始-->
         <div id="page-wrapper" class="gray-bg dashbard-1">
             <div class="row border-bottom">
                 <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-                    <div class="navbar-header">
-                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
-                            <i class="fa fa-bars"></i>
-                        </a>
-                    </div>
                     <ul class="nav navbar-top-links navbar-right">
                         <li class="dropdown">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
@@ -60,22 +96,26 @@ $this->beginContent('@app/views/layouts/base.php');
                 </nav>
             </div>
             <div class="row content-tabs">
-                <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i>
+                <button class="roll-nav roll-left J_tabLeft">
+                    <i class="fa fa-backward"></i>
                 </button>
                 <nav class="page-tabs J_menuTabs">
                     <div class="page-tabs-content">
                         <a href="javascript:;" class="active J_menuTab" data-id="dashboard/statistics">首页</a>
                     </div>
                 </nav>
-                <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
-                </button>
+                <button class="roll-nav roll-right J_tabRight">
+                    <i class="fa fa-forward"></i>
+                </button>                                               
                 <div class="btn-group roll-nav roll-right">
-                    <button class="dropdown J_tabClose" data-toggle="dropdown">关闭操作<span class="caret"></span>
+                    <button class="dropdown J_tabClose" data-toggle="dropdown">操作<span class="caret"></span>
                     </button>
                     <ul role="menu" class="dropdown-menu dropdown-menu-right">
-                        <li class="J_tabShowActive"><a>定位当前选项卡</a>
+                        <li class="J_tabRefresh"><a>刷新当前选项卡</a>
                         </li>
                         <li class="divider"></li>
+                        <li class="J_tabShowActive"><a>定位当前选项卡</a>
+                        </li>
                         <li class="J_tabCloseAll"><a>关闭全部选项卡</a>
                         </li>
                         <li class="J_tabCloseOther"><a>关闭其他选项卡</a>

@@ -6,10 +6,9 @@
 ?>
 
 <body class="gray-bg">
-<div class="wrapper wrapper-content">
-    <?php echo $content; ?>
-</div>
-
+    <div class="wrapper wrapper-content">
+        <?php echo $content; ?>
+    </div>
 </body>
 
 <?php

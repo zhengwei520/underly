@@ -10,7 +10,7 @@ namespace common\core\widget\hplus\nav;
 
 use yii\base\Widget;
 
-class NavWidget extends Widget
+class Nav extends Widget
 {
 
     public function init()

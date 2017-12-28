@@ -17,17 +17,17 @@ class HplusMainAsset extends AssetBundle
     public $baseUrl = '@web';
 
     public $css = [
-        'css/bootstrap.min14ed.css',
-        'css/font-awesome.min.css',
+//        'css/bootstrap.min14ed.css',
+//        'css/font-awesome.min.css',
         'css/plugins/morris/morris-0.4.3.min.css',
         'js/plugins/gritter/jquery.gritter.css',
-        'css/animate.min.css',
-        'css/style.min.css',
+//        'css/animate.min.css',
+//        'css/style.min.css',
     ];
 
     public $js = [
-        'js/jquery.min.js',
-        'js/bootstrap.min.js',
+//        'js/jquery.min.js',
+//        'js/bootstrap.min.js',
         'js/plugins/flot/jquery.flot.js',
         'js/plugins/flot/jquery.flot.tooltip.min.js',
         'js/plugins/flot/jquery.flot.tooltip.min.js',
@@ -46,7 +46,7 @@ class HplusMainAsset extends AssetBundle
         'js/demo/sparkline-demo.min.js',
     ];
     public $depends = [
-
+        'common\hplus\assets\HplusAsset'
     ];
 
 }

@@ -6,26 +6,24 @@
  * Time: 下午2:00
  */
 
-namespace backend\assets;
-
+namespace common\hplus\assets;
 
 use yii\web\AssetBundle;
 
 
 class HplusLoginAsset extends AssetBundle
 {
-    public $basePath = '@webroot';
-    public $baseUrl = '@web';
+    public $sourcePath = '@common/hplus/dist';
+
     public $css = [
         'css/font-awesome.min.css',
         'css/animate.min.css',
-        'css/style.min.css'
+        'css/style.min.css',
     ];
-    public $js = [
-        
-    ];
+
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
+    
 }
