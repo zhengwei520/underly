@@ -1,17 +1,8 @@
 <?php
 
-use yii\widgets\Breadcrumbs;
-use common\widgets\Alert;
-
 \backend\assets\HplusBodyAsset::register($this);
 
 $this->beginContent('@app/views/layouts/base.php');
-
-//Breadcrumbs::widget([
-//    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-//]);
-//
-//Alert::widget();
 
 ?>
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
@@ -49,7 +40,13 @@ $this->beginContent('@app/views/layouts/base.php');
                     </li>
                 </ul>
                 <!-- 导航 -->
-                <?= \common\core\widget\hplus\nav\Nav::widget(); ?>
+`                <?php
+                    echo \common\widgets\nav\Nav::widget([
+                        'dropDownCaret' => '<span class="fa arrow"></span>',
+                        'options'       => ['class' => 'nav', 'id' => 'side-menu'],
+                        'items'         => Yii::$app->params['nav'],
+                    ]);
+                ?>
                 <!-- 导航 -->
             </div>
         </nav>
@@ -106,7 +103,7 @@ $this->beginContent('@app/views/layouts/base.php');
                 </nav>
                 <button class="roll-nav roll-right J_tabRight">
                     <i class="fa fa-forward"></i>
-                </button>                                               
+                </button>
                 <div class="btn-group roll-nav roll-right">
                     <button class="dropdown J_tabClose" data-toggle="dropdown">操作<span class="caret"></span>
                     </button>

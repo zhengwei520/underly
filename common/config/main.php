@@ -12,4 +12,5 @@ return [
     'container'  => [
         'singletons' => \common\helpers\DiHelper::di(),
     ],
+    
 ];
