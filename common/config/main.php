@@ -8,6 +8,9 @@ return [
         'commonCache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'nav' => [
+            'class' => \common\core\filter\Menu::className(),
+        ],
     ],
     'container'  => [
         'singletons' => \common\helpers\DiHelper::di(),

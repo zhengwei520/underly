@@ -8,10 +8,16 @@
 
 return [
     [
+        'label'           => '控制面板',
+        'url'             => '/dashboard/statistics',
+        'dropDownOptions' => ['class' => 'nav nav-second-level'],
+        'permission'      => 'all',
+        'linkOptions'     => ['class' => 'J_menuItem'],
+    ],
+    [
         'label'           => '哈哈管理',
         'url'             => '',
         'dropDownOptions' => ['class' => 'nav nav-second-level'],
-        'role'            => 'admin',
         'items'           => [
             [
                 'label'       => '223222',
@@ -22,6 +28,7 @@ return [
                 'label'       => '3333',
                 'url'         => '/site/index',
                 'linkOptions' => ['class' => 'J_menuItem'],
+                'permission'  => 'edit',
             ],
         ],
     ],

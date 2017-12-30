@@ -44,7 +44,7 @@ $this->beginContent('@app/views/layouts/base.php');
                     echo \common\widgets\nav\Nav::widget([
                         'dropDownCaret' => '<span class="fa arrow"></span>',
                         'options'       => ['class' => 'nav', 'id' => 'side-menu'],
-                        'items'         => Yii::$app->params['nav'],
+                        'items'         => Yii::$app->nav->getMenu(),
                     ]);
                 ?>
                 <!-- 导航 -->
@@ -98,7 +98,7 @@ $this->beginContent('@app/views/layouts/base.php');
                 </button>
                 <nav class="page-tabs J_menuTabs">
                     <div class="page-tabs-content">
-                        <a href="javascript:;" class="active J_menuTab" data-id="dashboard/statistics">首页</a>
+                        <a href="javascript:;" class="active J_menuTab" data-id="/dashboard/statistics">首页</a>
                     </div>
                 </nav>
                 <button class="roll-nav roll-right J_tabRight">
@@ -122,7 +122,7 @@ $this->beginContent('@app/views/layouts/base.php');
                 <a href="login.html" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
             </div>
             <div class="row J_mainContent" id="content-main">
-                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="<?php echo Yii::$app->urlManager->createUrl('dashboard/statistics')?>" frameborder="0" data-id="dashboard/statistics" seamless></iframe>
+                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="<?php echo Yii::$app->urlManager->createUrl('/dashboard/statistics')?>" frameborder="0" data-id="dashboard/statistics" seamless></iframe>
             </div>
             <div class="footer">
                 <div class="pull-right">&copy; 2016 - <?php echo date('Y') ?>
