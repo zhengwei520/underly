@@ -136,6 +136,10 @@ class Menu extends Component
             }
             $item['visible'] = $visible;
             $breadcrumb = $this->getLabel($item);
+            $key = ArrayHelper::getValue($item, 'key', null);
+            if ($key !== null) {
+                $breadcrumb['key'] = $key;
+            }
             //如果有子项， 递归，数据不记录，但是要返回 当前子项的权限
             if (!empty($item['items'])) {
                 $item['items'] = $this->menusProcess($item['items'], false);
