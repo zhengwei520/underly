@@ -16,10 +16,10 @@ $this->beginContent('@app/views/layouts/base.php');
                 <ul class="nav" >
                     <li class="nav-header">
                         <div class="dropdown profile-element">
-                            <span><img alt="image" class="img-circle" src="img/profile_small.jpg" /></span>
+                            <span><img alt="image" class="img-circle" src="<?php echo Yii::$app->user->identity->face ? Yii::$app->user->identity->face : 'img/profile_small.jpg' ?>" /></span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
-                               <span class="block m-t-xs"><strong class="font-bold">Beaut-zihan</strong></span>
+                               <span class="block m-t-xs"><strong class="font-bold"><?php echo Yii::$app->user->identity->username ?></strong></span>
                                 <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
                                 </span>
                             </a>
@@ -33,7 +33,7 @@ $this->beginContent('@app/views/layouts/base.php');
                                 <li><a class="J_menuItem" href="mailbox.html">信箱</a>
                                 </li>
                                 <li class="divider"></li>
-                                <li><a href="login.html">安全退出</a>
+                                <li><a href="<?php echo \yii\helpers\Url::to('/site/logout')?>">安全退出</a>
                                 </li>
                             </ul>
                         </div>
@@ -119,7 +119,7 @@ $this->beginContent('@app/views/layouts/base.php');
                         </li>
                     </ul>
                 </div>
-                <a href="login.html" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
+                <a href="<?php echo \yii\helpers\Url::to('/site/logout')?>" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
             </div>
             <div class="row J_mainContent" id="content-main">
                 <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="<?php echo Yii::$app->urlManager->createUrl('/dashboard/statistics')?>" frameborder="0" data-id="/dashboard/statistics" seamless></iframe>

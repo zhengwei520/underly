@@ -118,7 +118,8 @@ class Menu extends Component
         foreach ($items as $key => $item) {
             // 权限
             // 如果是超级管理员账号, 直接通过
-            $visible = \Yii::$app->user->identity->account === $this->admin ? true : false;
+            $identity = \Yii::$app->user->identity;
+            $visible = (isset($identity['account']) ? $identity['account'] : '') === $this->admin ? true : false;
             if (!$visible) {
                 // 根据验证角色组是否有值，判断走那种验证规则
                 // 如果为空 或者 all , 通过

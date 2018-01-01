@@ -17,4 +17,6 @@ class StatisticsController extends Controller
     {
         return $this->render('index');
     }
+    
+
 }

@@ -50,4 +50,10 @@ class SiteController extends WebController
             'model' => $model
         ]);
     }
+
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
+        return $this->goHome();
+    }
 }
