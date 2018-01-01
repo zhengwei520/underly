@@ -11,6 +11,9 @@ return [
         'nav' => [
             'class' => \common\core\filter\Menu::className(),
         ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
     ],
     'container'  => [
         'singletons' => \common\helpers\DiHelper::di(),

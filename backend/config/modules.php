@@ -10,4 +10,7 @@ return [
     'dashboard' => [
         'class' => 'backend\modules\dashboard\Module',
     ],
+    'role' => [
+        'class' => 'backend\modules\role\Module',
+    ],
 ];

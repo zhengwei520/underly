@@ -6,6 +6,34 @@
  * Time: 下午9:33
  */
 
+/**
+ * [
+ * 'label'           => '控制面板',
+ * 'url'             => '/dashboard/statistics',
+ * 'dropDownOptions' => ['class' => 'nav nav-second-level'],
+ * 'permission'      => 'all',
+ * 'linkOptions'     => ['class' => 'J_menuItem'],
+ * ],
+ * [
+ * 'label'           => '用户管理',
+ * 'url'             => '',
+ * 'dropDownOptions' => ['class' => 'nav nav-second-level'],
+ * 'items'           => [
+ * [
+ * 'label'       => '223222',
+ * 'url'         => '/dashboard/demo',
+ * 'linkOptions' => ['class' => 'J_menuItem'],
+ * ],
+ * [
+ * 'label'       => '3333',
+ * 'url'         => '/site/index',
+ * 'linkOptions' => ['class' => 'J_menuItem'],
+ * 'permission'  => 'edit',
+ * ],
+ * ],
+ * ],
+ *
+ */
 return [
     [
         'label'           => '控制面板',
@@ -15,20 +43,38 @@ return [
         'linkOptions'     => ['class' => 'J_menuItem'],
     ],
     [
-        'label'           => '哈哈管理',
-        'url'             => '',
+        'label'           => '账号中心',
+        'url'             => '#',
         'dropDownOptions' => ['class' => 'nav nav-second-level'],
         'items'           => [
             [
-                'label'       => '223222',
-                'url'         => '/dashboard/demo',
+                'label'       => '用户管理',
+                'url'         => '#',
                 'linkOptions' => ['class' => 'J_menuItem'],
+                'items'       => [
+                    [
+                        'label'       => '用户列表',
+                        'url'         => '#',
+                        'linkOptions' => ['class' => 'J_menuItem'],
+                    ],
+                ],
             ],
             [
-                'label'       => '3333',
-                'url'         => '/site/index',
+                'label'       => '权限管理',
+                'url'         => '/role',
                 'linkOptions' => ['class' => 'J_menuItem'],
-                'permission'  => 'edit',
+                'items'       => [
+                    [
+                        'label'       => '角色列表',
+                        'url'         => '/role',
+                        'linkOptions' => ['class' => 'J_menuItem'],
+                    ],
+                    [
+                        'label'       => '权限列表',
+                        'url'         => '/role/permission',
+                        'linkOptions' => ['class' => 'J_menuItem'],
+                    ],
+                ],
             ],
         ],
     ],
