@@ -6,12 +6,12 @@
  * Time: 下午7:59
  */
 
-namespace backend\assets;
+namespace backend\modules\dashboard\assets;
 
 
 use yii\web\AssetBundle;
 
-class HplusMainAsset extends AssetBundle
+class DashboardAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';

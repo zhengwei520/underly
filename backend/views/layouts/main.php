@@ -1,8 +1,6 @@
 <?php
 
-
-\backend\assets\HplusMainAsset::register($this);
-
+\common\hplus\assets\HplusAsset::register($this);
 
 $this->beginContent('@app/views/layouts/base.php');
 ?>
@@ -13,10 +11,9 @@ $this->beginContent('@app/views/layouts/base.php');
             $breadcrumbs = Yii::$app->nav->getBreadcrumb();
             if (!empty($this->title)) {
                 $breadcrumbs[] = $this->title;
-            }else{
-                $breadcrumb = array_pop($breadcrumbs);
-                $breadcrumbs[] = $breadcrumb['label'];
             }
+            $currentUrl = parse_url(\Yii::$app->request->absoluteUrl);
+            $path = isset($currentUrl['path']) ? $currentUrl['path'] : '/';
             $html = '<div class="row wrapper border-bottom white-bg page-heading">';
             $html .= '<div class="col-sm-12"><h2>' . $this->title . '</h2>';
             $html .= \common\widgets\nav\Breadcrumbs::widget([

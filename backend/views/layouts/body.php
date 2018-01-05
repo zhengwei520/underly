@@ -4,6 +4,8 @@
 
 $this->beginContent('@app/views/layouts/base.php');
 
+$identity = Yii::$app->user->identity;
+
 ?>
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
     <div id="wrapper">
@@ -16,10 +18,10 @@ $this->beginContent('@app/views/layouts/base.php');
                 <ul class="nav" >
                     <li class="nav-header">
                         <div class="dropdown profile-element">
-                            <span><img alt="image" class="img-circle" src="<?php echo Yii::$app->user->identity->face ? Yii::$app->user->identity->face : 'img/profile_small.jpg' ?>" /></span>
+                            <span><img alt="image" class="img-circle" src="<?php echo $identity && !empty($identity->face) ?  $identity->face : 'img/profile_small.jpg' ?>" /></span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
-                               <span class="block m-t-xs"><strong class="font-bold"><?php echo Yii::$app->user->identity->username ?></strong></span>
+                               <span class="block m-t-xs"><strong class="font-bold"><?php echo $identity ? $identity->username : '' ?></strong></span>
                                 <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
                                 </span>
                             </a>

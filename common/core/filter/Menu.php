@@ -189,9 +189,9 @@ class Menu extends Component
             $breadcrumbs = [];
             // 如果没有设置 url 参数， 过滤
             if (!isset($item['url'])) {
-                continue;
+                $item['url'] = '';
             }
-            $breadcrumbs[] = $this->getLabel($item);
+            $breadcrumbs[] = empty($item['url']) ? ArrayHelper::getValue($item, 'label') :$this->getLabel($item);
             // 当url参数 等于当前访问 url 路径,递归结束
             if ($item['url'] === $path) {
                 $this->status = true;

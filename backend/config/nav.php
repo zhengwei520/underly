@@ -15,24 +15,36 @@
  * 'linkOptions'     => ['class' => 'J_menuItem'],
  * ],
  * [
- * 'label'           => '用户管理',
- * 'url'             => '',
+ * 'label'           => '账号中心',
  * 'dropDownOptions' => ['class' => 'nav nav-second-level'],
  * 'items'           => [
  * [
- * 'label'       => '223222',
- * 'url'         => '/dashboard/demo',
+ * 'label'       => '用户管理',
+ * 'items'       => [
+ * [
+ * 'label'       => '用户列表',
+ * 'url'         => '#',
+ * 'linkOptions' => ['class' => 'J_menuItem'],
+ * ],
+ * ],
+ * ],
+ * [
+ * 'label'       => '权限管理',
+ * 'items'       => [
+ * [
+ * 'label'       => '角色列表',
+ * 'url'         => '/role',
  * 'linkOptions' => ['class' => 'J_menuItem'],
  * ],
  * [
- * 'label'       => '3333',
- * 'url'         => '/site/index',
+ * 'label'       => '权限列表',
+ * 'url'         => '/role/permission',
  * 'linkOptions' => ['class' => 'J_menuItem'],
- * 'permission'  => 'edit',
  * ],
  * ],
  * ],
- *
+ * ],
+ * ],
  */
 return [
     [
@@ -44,14 +56,11 @@ return [
     ],
     [
         'label'           => '账号中心',
-        'url'             => '#',
         'dropDownOptions' => ['class' => 'nav nav-second-level'],
         'items'           => [
             [
-                'label'       => '用户管理',
-                'url'         => '#',
-                'linkOptions' => ['class' => 'J_menuItem'],
-                'items'       => [
+                'label' => '用户管理',
+                'items' => [
                     [
                         'label'       => '用户列表',
                         'url'         => '#',
@@ -60,10 +69,8 @@ return [
                 ],
             ],
             [
-                'label'       => '权限管理',
-                'url'         => '/role',
-                'linkOptions' => ['class' => 'J_menuItem'],
-                'items'       => [
+                'label' => '权限管理',
+                'items' => [
                     [
                         'label'       => '角色列表',
                         'url'         => '/role',
