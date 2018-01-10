@@ -80,7 +80,7 @@ class Dropdown extends \yii\bootstrap\Dropdown
                     $submenuOptions = array_merge($submenuOptions, $item['submenuOptions']);
                 }
                 // 加一个 下拉图标
-                $dropDownCaret = ArrayHelper::getValue($item, 'dropDownCaret', '<span class="caret"></span>');
+                $dropDownCaret = ArrayHelper::getValue($item, 'dropDownCaret', '<span class="fa arrow"></span>');
                 if ($dropDownCaret !== '') {
                     $label .= ' ' . $dropDownCaret;
                 }

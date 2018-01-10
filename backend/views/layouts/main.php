@@ -1,6 +1,7 @@
 <?php
 
 \common\hplus\assets\HplusAsset::register($this);
+\common\widgets\SweetAlert::widget();
 
 $this->beginContent('@app/views/layouts/base.php');
 ?>

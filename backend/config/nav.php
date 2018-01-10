@@ -72,12 +72,12 @@ return [
                 'label' => '权限管理',
                 'items' => [
                     [
-                        'label'       => '角色列表',
+                        'label'       => '角色',
                         'url'         => '/role',
                         'linkOptions' => ['class' => 'J_menuItem'],
                     ],
                     [
-                        'label'       => '权限列表',
+                        'label'       => '权限',
                         'url'         => '/role/permission',
                         'linkOptions' => ['class' => 'J_menuItem'],
                     ],
