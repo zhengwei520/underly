@@ -25,6 +25,7 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
+        $this->warning('ok');
 //
 //        // 添加 "createPost" 权限
 //        $createPost = $auth->createPermission('createPost');
