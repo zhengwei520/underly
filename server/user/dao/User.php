@@ -248,7 +248,9 @@ class User extends \common\core\server\ActiveRecord implements IdentityInterface
     public function getUser(array $params, $isAll = false)
     {
         $model = new Query();
+        $model->from($this->tableName());
         $model = $this->getUserWhere($model, $params);
+        $this->order($model);
         return $isAll ? $model->all() : $this->page($model);
     }
 

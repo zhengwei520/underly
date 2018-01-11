@@ -68,9 +68,9 @@ class ActionColumn extends Column
                 $url = [$url];
             }
             $model = ArrayHelper::getValue($this->list->models, $this->index, []);
-            $href = ArrayHelper::merge($url, [
+            $href = ArrayHelper::merge($url, ArrayHelper::merge([
                 $this->list->id => ArrayHelper::getValue($model, $this->list->id),
-            ]);
+            ], \Yii::$app->request->getQueryParams()));
             $data[] = $this->html->tag($this->type, $content, ArrayHelper::merge($option, [
                 'href'  => Url::to($href),
                 'title' => $title,

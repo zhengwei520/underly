@@ -48,5 +48,8 @@ interface UserInterface
      */
     public function register(array $params, $isApi = false);
 
+
+    public function getUser(array $params = []);
+
 }
 

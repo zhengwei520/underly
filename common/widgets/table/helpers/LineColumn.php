@@ -21,7 +21,7 @@ class LineColumn extends Column
         if (empty($this->list->pages)) {
             $index = $this->index;
         }else{
-            $index = $this->index;
+            $index = $this->list->pages->page * $this->list->pages->pageSize + $this->index;
         }
         return $index + 1;
     }

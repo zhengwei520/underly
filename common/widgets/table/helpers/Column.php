@@ -115,7 +115,8 @@ class Column extends BaseObject
         if ($this->header !== null || $this->label === null && $this->attribute === null) {
             return $this->emptyContent;
         }
-        $label = $this->html->encode($this->label);
+
+        $label = $this->html->encode($this->label ? $this->label : $this->attribute);
 
         // sort link
         if ($this->attribute !== null && in_array($this->attribute, $this->list->order)) {
@@ -155,8 +156,8 @@ class Column extends BaseObject
         if ($this->header !== null || empty($this->value)) {
             return $this->emptyContent;
         }
-
-        return $this->list->formatter->format($this->value, explode(':', $this->format));
+    
+        return $this->list->formatter->format($this->value, explode(',', $this->format));
     }
 
     /**

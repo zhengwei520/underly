@@ -9,6 +9,7 @@
 namespace backend\common\core\base;
 
 use common\core\base\WebController;
+use yii\helpers\ArrayHelper;
 
 class Controller extends WebController
 {
@@ -49,6 +50,16 @@ class Controller extends WebController
     public function error($message)
     {
         $this->alert('error', $message);
+    }
+
+    public function redirect($url, $returnPage = false)
+    {
+        if ($returnPage) {
+            $params = \Yii::$app->request->getQueryParams();
+            ArrayHelper::remove($params, 'id');
+            $url = ArrayHelper::merge((array) $url, $params);
+        }
+        return parent::redirect($url);
     }
 
 }

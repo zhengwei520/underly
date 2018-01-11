@@ -39,9 +39,9 @@ use yii\helpers\ArrayHelper;
  *             'attribute' => 'c'
  *         ],
  *         '#',
- *         'a:呵呵',
- *         'b:呵呵2',
- *         'c:呵呵5',
+ *         'a|呵呵',
+ *         'b|呵呵2',
+ *         'c|呵呵5',
  *         [
  *          'class' => \common\widgets\table\helpers\ActionColumn::className(),
  *          ‘action’ => [[
@@ -163,7 +163,7 @@ class ListView extends Widget
      */
     protected function createDataColumn($text)
     {
-        $matches = explode(':', $text);
+        $matches = explode('|', $text);
 
         return \Yii::createObject([
             'class'     => $text === '#' ? LineColumn::className() : Column::className(),
@@ -201,16 +201,6 @@ class ListView extends Widget
             $this->columns[$i] = $column;
         }
     }
-
-    protected function registerJs()
-    {
-        //        $id = $this->options['id'];
-        //        $options = Json::htmlEncode($this->getClientOptions());
-        //        $view = $this->getView();
-        //        GridViewAsset::register($view);
-        //        $view->registerJs("jQuery('#$id').yiiGridView($options);");
-    }
-
 
     protected function renderEmpty()
     {
@@ -281,8 +271,6 @@ class ListView extends Widget
 
     public function run()
     {
-        // 注册 资源文件
-        $this->registerJs();
         $table = $this->renderTable();
         $page = $this->renderPage();
         $content = array_filter([

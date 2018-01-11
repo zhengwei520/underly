@@ -14,6 +14,7 @@ use yii\base\InvalidConfigException;
 use yii\behaviors\AttributeBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\data\Pagination;
+use yii\data\Sort;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\validators\Validator;
@@ -24,7 +25,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     use InvalidException;
 
     public static $isApi = false;
-    
+
     public function behaviors()
     {
         $behaviors = parent::behaviors();
@@ -44,7 +45,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
         ]);
         return $behaviors;
     }
-    
+
     /**
      * 分页
      *
@@ -66,6 +67,22 @@ class ActiveRecord extends \yii\db\ActiveRecord
             'pages'  => $pages,
         ];
     }
+
+    public function order(Query &$query, $defaultOrder = null)
+    {
+        $model = get_called_class();
+        $attributeLabels = $model::attributeLabels();
+        $attributes = array_keys($attributeLabels);
+        $order = new Sort([
+            'attributes' => $attributes,
+        ]);
+        $query->orderBy($order->orders);
+        if ($defaultOrder) {
+            $query->addOrderBy($defaultOrder);
+        }
+        return $query;
+    }
+
 
     /**
      * debug
@@ -105,8 +122,8 @@ class ActiveRecord extends \yii\db\ActiveRecord
      */
     public function setAttributes($values, $safeOnly = true)
     {
-        foreach ($values as $key => $value){
-            if(is_null($value)){
+        foreach ($values as $key => $value) {
+            if (is_null($value)) {
                 unset($values[$key]);
             }
         }
@@ -139,6 +156,4 @@ class ActiveRecord extends \yii\db\ActiveRecord
         }
         return $validators;
     }
-
-
 }

@@ -85,4 +85,9 @@ class UserImpl extends BaseServer implements UserInterface
     {
         return $this->user->register($params, $isApi);
     }
+
+    public function getUser(array $params = [])
+    {
+        return $this->user->getUser($params);
+    }
 }

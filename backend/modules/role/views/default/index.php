@@ -24,28 +24,27 @@ $this->title = '列表';
 //        ],
 //    ]);
 
-
 echo \common\widgets\table\ListView::widget([
-    'data'    => [
-        ['a' => '1', 'b' => 2, 'c' => 3],
-        ['a' => '13', 'b' => 2, 'c' => 3],
-        ['a' => '15', 'b' => 2, 'c' => 3],
-    ],
+    'data'    => $data,
     'order'   => 'all',
-    'id'      => 'a',
     'columns' => [
+
+
         //        [
         //            'class' => \common\widgets\table\helpers\Column::className(),
         //            'headerOption' => ['class' => '1'],
         //            'attribute' => 'c'
         //        ],
-        [
-            'class' => \common\widgets\table\helpers\CheckboxColumn::className(),
-        ],
+        //        [
+        //            'class' => \common\widgets\table\helpers\CheckboxColumn::className(),
+        //        ],
         '#',
-        'a:呵呵',
-        'b:呵呵2',
-        'c:呵呵5',
+        'id|ID',
+        'account|账号',
+        'auth_key',
+        'password|密码',
+        'created_at|开始时间|date,Y-m-d H:i:s',
+
         [
             'class' => \common\widgets\table\helpers\ActionColumn::className(),
         ],

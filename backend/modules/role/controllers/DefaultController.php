@@ -3,6 +3,7 @@
 namespace backend\modules\role\controllers;
 
 use backend\common\core\base\Controller;
+use server\user\UserInterface;
 use yii\base\Module;
 
 /**
@@ -13,9 +14,12 @@ class DefaultController extends Controller
 
     private $auth;
 
-    public function __construct($id, Module $module, array $config = [])
+    private $user;
+
+    public function __construct($id, Module $module,UserInterface $user, array $config = [])
     {
         $this->auth = \Yii::$app->authManager;
+        $this->user = $user;
         parent::__construct($id, $module, $config);
     }
 
@@ -25,7 +29,6 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-        $this->warning('ok');
 //
 //        // 添加 "createPost" 权限
 //        $createPost = $auth->createPermission('createPost');
@@ -69,7 +72,11 @@ class DefaultController extends Controller
 //
 //        // 允许 "author" 更新自己的帖子
 //        $auth->addChild($author, $updateOwnPost);
-        return $this->render('index', ['role' => $this->auth->getRoles()]);
+
+        //'role' => $this->auth->getRoles()
+        $data = $this->user->getUser();
+
+        return $this->render('index', ['data' => $data]);
     }
 
     public function actionEdit()
