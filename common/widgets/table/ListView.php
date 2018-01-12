@@ -217,7 +217,6 @@ class ListView extends Widget
         foreach ($this->columns as $column) {
             /* @var $column Column */
             $column->index = $index;
-            $column->value = ArrayHelper::getValue($model, $column->attribute);
             $cells[] = $column->renderDataCell();
         }
         $options['data-key'] = ArrayHelper::getValue($model, $this->id, $index);

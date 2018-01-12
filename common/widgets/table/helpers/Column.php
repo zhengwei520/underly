@@ -147,17 +147,28 @@ class Column extends BaseObject
         return $this->html->tag('th', $this->renderHeaderCellContent(), $this->thOption);
     }
 
+    protected function getDataCellContent()
+    {
+        $model = $this->list->models[$this->index];
+        if ($this->value !== null) {
+            if ($this->value instanceof \Closure) {
+                return call_user_func($this->value, $model, $this);
+            }
+            return $this->value;
+        } elseif ($this->attribute !== null) {
+            return ArrayHelper::getValue($model, $this->attribute);
+        }
+
+        return $this->emptyContent;
+    }
+
     /**
      *  td  content
      * @return mixed
      */
     protected function renderDataCellContent()
     {
-        if ($this->header !== null || empty($this->value)) {
-            return $this->emptyContent;
-        }
-    
-        return $this->list->formatter->format($this->value, explode(',', $this->format));
+        return $this->list->formatter->format($this->getDataCellContent(), explode(',', $this->format));
     }
 
     /**

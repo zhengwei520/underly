@@ -43,7 +43,8 @@ echo \common\widgets\table\ListView::widget([
         'account|账号',
         'auth_key',
         'password|密码',
-        'created_at|开始时间|date,Y-m-d H:i:s',
+        'created_at|开始时间|date,php:Y-m-d',
+
 
         [
             'class' => \common\widgets\table\helpers\ActionColumn::className(),
