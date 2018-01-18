@@ -13,17 +13,20 @@ class LineColumn extends Column
 {
     public $header = '#';
 
+    protected $i = 0;
+
     /**
      * @inheritdoc
      */
     protected function renderDataCellContent()
     {
+        $this->i ++;
         if (empty($this->list->pages)) {
-            $index = $this->index;
+            $index = $this->i;
         }else{
-            $index = $this->list->pages->page * $this->list->pages->pageSize + $this->index;
+            $index = $this->list->pages->page * $this->list->pages->pageSize + $this->i;
         }
-        return $index + 1;
+        return $index;
     }
 
 }

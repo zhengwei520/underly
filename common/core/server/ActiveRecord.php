@@ -60,6 +60,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     public function page(Query $query, $pageSize = 10)
     {
         $count = $query->count();
+        $pageSize = ArrayHelper::getValue(\Yii::$app->request->getQueryParams(), 'per-page', $pageSize);
         $pages = new Pagination(['totalCount' => $count, 'pageSize' => $pageSize]);
         $models = $query->offset($pages->offset)->limit($pages->limit)->all();
         return [

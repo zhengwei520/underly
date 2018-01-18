@@ -45,7 +45,7 @@ class Column extends BaseObject
     public $tdOption = [];
 
 
-    public $emptyContent = '&nbsp;';
+    public $emptyContent = '';
 
     /**
      * @throws \yii\base\InvalidConfigException
@@ -168,7 +168,11 @@ class Column extends BaseObject
      */
     protected function renderDataCellContent()
     {
-        return $this->list->formatter->format($this->getDataCellContent(), explode(',', $this->format));
+        $value = $this->getDataCellContent();
+        if ($value === null) {
+            $value = $this->emptyContent;
+        }
+        return $this->list->formatter->format($value, explode(',', $this->format));
     }
 
     /**
