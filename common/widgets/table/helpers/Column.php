@@ -147,6 +147,30 @@ class Column extends BaseObject
         return $this->html->tag('th', $this->renderHeaderCellContent(), $this->thOption);
     }
 
+    /**
+     *  td  content
+     * @return mixed
+     */
+    protected function renderSearchCellContent()
+    {
+        $search = ArrayHelper::getValue($this->list->search, $this->attribute, []);
+        if (!empty($search)) {
+            return $search->renderSearchCellContent();
+        }
+
+        return $this->emptyContent;
+    }
+
+    public function renderSearchCell()
+    {
+        return $this->html->tag('td', $this->renderSearchCellContent(), $this->tdOption);
+    }
+
+
+    /**
+     * get cell content
+     * @return mixed|string
+     */
     protected function getDataCellContent()
     {
         $model = $this->list->models[$this->index];

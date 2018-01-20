@@ -8,11 +8,13 @@
 
 namespace common\widgets\table;
 
+use common\assets\UtilAsset;
 use common\helpers\BaseHelper;
 use common\helpers\CodeHelper;
 use common\widgets\table\helpers\Column;
 use common\widgets\table\helpers\Formatter;
 use common\widgets\table\helpers\LineColumn;
+use common\widgets\table\helpers\SearchColumn;
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;
 
@@ -25,6 +27,14 @@ use yii\helpers\ArrayHelper;
  *          ['a' => '1', 'b' => 2, 'c' => 3],
  *  ],
  *  'order' => 'all',
+ * 'search' => [
+ *          'id',
+ *          [
+ *              'name' => 'account',
+ *              'type' => 'select',
+ *              'data' => ['a' => 'a', 'b' => 'b'],
+ *          ],
+ *   ],
  *  'columns' => [
  *         [
  *          'class' => \common\widgets\table\helpers\ActionColumn::className(),
@@ -53,32 +63,6 @@ use yii\helpers\ArrayHelper;
  *
  * ])
  *
- * echo \common\widgets\table\ListView::widget([
- * 'data'    => $data,
- * 'order'   => 'all',
- * 'columns' => [
- *
- *
- * //        [
- * //            'class' => \common\widgets\table\helpers\Column::className(),
- * //            'headerOption' => ['class' => '1'],
- * //            'attribute' => 'c'
- * //        ],
- * //        [
- * //            'class' => \common\widgets\table\helpers\CheckboxColumn::className(),
- * //        ],
- * '#',
- * 'id|ID',
- * 'account|账号',
- * 'auth_key',
- * 'password|密码',
- * 'created_at|开始时间|date,php:Y-m-d',
- * [
- * 'class' => \common\widgets\table\helpers\ActionColumn::className(),
- * ],
- * ],
- *
- * ]);
  *
  * @package common\widgets\table
  */
@@ -90,6 +74,8 @@ class ListView extends Widget
     public $data = [];
     // 展示列
     public $columns = [];
+    // 搜索
+    public $search = [];
     //排序列 默认不排序， 指定排序字段，支持别名字段, all 表示所有
     public $order;
     //id
@@ -161,6 +147,7 @@ class ListView extends Widget
         }
 
         $this->initColumns();
+        $this->initSearchColumns();
     }
 
     /**
@@ -230,6 +217,43 @@ class ListView extends Widget
         }
     }
 
+    protected function registerClientScript()
+    {
+        $params = \Yii::$app->request->getQueryParams();
+        $params[0] = \Yii::$app->controller->getRoute();
+        $url = \Yii::$app->getUrlManager()->createUrl($params);
+        $id = $this->options['id'];
+        $view = $this->getView();
+        UtilAsset::register($view);
+        $js = <<<js
+            $("#$id .list_table_search").change(function(){window.location.href=Util.changeURLArg("{$url}", $(this).attr('name'), $(this).val());});
+js;
+        $view->registerJs($js);
+    }
+
+    /**
+     * 初始化 search
+     * @throws \yii\base\InvalidConfigException
+     */
+    protected function initSearchColumns()
+    {
+        $search = [];
+        foreach ($this->search as $s => $column) {
+            if (is_string($column)) {
+                $column = ['name' => $column, 'type' => 'text'];
+            }
+            $column = \Yii::createObject(array_merge([
+                'class' => SearchColumn::className(),
+                'html'  => $this->html,
+            ], $column));
+            $search[$column->name] = $column;
+        }
+        $this->search = $search;
+        if (!empty($search)) {
+            $this->registerClientScript();
+        }
+    }
+
     protected function renderEmpty()
     {
         if ($this->emptyText === false) {
@@ -239,7 +263,7 @@ class ListView extends Widget
     }
 
 
-    protected function renderTableRow($model, $index)
+    protected function renderTableDataRow($model, $index)
     {
         $cells = [];
         foreach ($this->columns as $column) {
@@ -251,12 +275,33 @@ class ListView extends Widget
         return $this->html->tag('tr', implode('', $cells), array_merge($options, $this->tableTrOption));
     }
 
-    protected function renderTableBody()
+    protected function renderTableData()
     {
         $rows = [];
         foreach ($this->models as $index => $model) {
-            $rows[] = $this->renderTableRow($model, $index);
+            $rows[] = $this->renderTableDataRow($model, $index);
         }
+        return $rows;
+    }
+
+    protected function renderTableSearch()
+    {
+        $cells = [];
+        if (empty($this->search)) {
+            return $cells;
+        }
+        $rows = [];
+        foreach ($this->columns as $column) {
+            /* @var $column Column */
+            $rows[] = $column->renderSearchCell();
+        }
+        $cells[] = $this->html->tag('tr', implode('', $rows), $this->tableTrOption);
+        return $cells;
+    }
+
+    protected function renderTableBody()
+    {
+        $rows = ArrayHelper::merge($this->renderTableSearch(), $this->renderTableData());
 
         if (empty($rows) && $this->emptyText !== false) {
             $colspan = count($this->columns);
@@ -293,9 +338,9 @@ class ListView extends Widget
     protected function renderPage()
     {
         if (!$this->pages) {
-            return ;
+            return;
         }
-        
+
         return LinkPager::widget([
             'pagination'    => $this->pages,
             'prevPageLabel' => '上一页',
