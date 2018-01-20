@@ -10,6 +10,8 @@ namespace common\widgets\table\helpers;
 
 
 use common\assets\SweetAlertAsset;
+use common\helpers\BaseHelper;
+use common\helpers\CodeHelper;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
@@ -18,6 +20,8 @@ class ActionColumn extends Column
     public $actions;
 
     public $type;
+
+    public $defaultActions;
 
     /**
      * @throws \yii\base\InvalidConfigException
@@ -29,21 +33,25 @@ class ActionColumn extends Column
             $this->type = 'a';
         }
 
-        if ($this->actions === null) {
-            $this->actions = [
-                [
+        if ($this->defaultActions === null) {
+            $this->defaultActions = [
+                'edit' => [
                     'title'   => '编辑',
                     'url'     => 'edit',
                     'visible' => true,
                     'option'  => [],
                 ],
-                [
+                'delete' => [
                     'title'   => '删除',
                     'url'     => 'delete',
                     'visible' => true,
                     'option'  => ['class' => 'delete'],
                 ],
             ];
+        }
+
+        if ($this->actions === null) {
+            $this->actions = $this->defaultActions;
         }
 
         $this->registerClientScript();
@@ -56,6 +64,12 @@ class ActionColumn extends Column
     {
         $data = [];
         foreach ($this->actions as $action) {
+            if (is_string($action)) {
+                $action = ArrayHelper::getValue($this->defaultActions, $action, []);
+                if (empty($action)) {
+                    BaseHelper::invalidException(CodeHelper::SYS_PARAMS_ERROR, '操作参数错误');
+                }
+            }
             $visible = ArrayHelper::getValue($action, 'visible', true);
             if (!$visible) {
                 continue;
@@ -67,9 +81,10 @@ class ActionColumn extends Column
             if (is_string($url)) {
                 $url = [$url];
             }
+            $id = ArrayHelper::getValue($action, 'id', $this->list->id);
             $model = ArrayHelper::getValue($this->list->models, $this->index, []);
             $href = ArrayHelper::merge($url, ArrayHelper::merge([
-                $this->list->id => ArrayHelper::getValue($model, $this->list->id),
+                $id => ArrayHelper::getValue($model, $id),
             ], \Yii::$app->request->getQueryParams()));
             $data[] = $this->html->tag($this->type, $content, ArrayHelper::merge($option, [
                 'href'  => Url::to($href),
