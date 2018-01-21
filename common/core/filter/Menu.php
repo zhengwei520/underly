@@ -59,6 +59,8 @@ class Menu extends Component
      */
     public $admin = 'root';
 
+    public $permissionModel;
+
     /**
      * 验证角色组
      * @var array
@@ -128,9 +130,20 @@ class Menu extends Component
                     if (empty($role) || $role === 'all' || array_intersect($this->role, $role)) {
                         $visible = true;
                     }
-                } else {
+                }elseif($this->permissionModel === 'name') {
                     $permission = ArrayHelper::getValue($item, 'permission', 'all');
                     if ($permission === 'all' || \Yii::$app->user->can($permission)) {
+                        $visible = true;
+                    }
+                }else{
+                    $url =  ArrayHelper::getValue($item, 'url', 'all');
+                    $urls = explode(DIRECTORY_SEPARATOR, $url);
+                    if (count($urls) === 2) {
+                        $urls[] = 'default';
+                        $urls[] = 'index';
+                        $url = implode(DIRECTORY_SEPARATOR, $urls);
+                    }
+                    if ($url === 'all' || \Yii::$app->user->can($url)) {
                         $visible = true;
                     }
                 }
@@ -160,10 +173,12 @@ class Menu extends Component
 
     /**
      * 获得 菜单
+     * @param @model
      * @return array
      */
-    public function getMenu()
+    public function getMenu($model = 'name')
     {
+        $this->permissionModel = $model;
         $this->menusProcess($this->menus);
         return $this->menu;
     }
@@ -191,6 +206,12 @@ class Menu extends Component
             if (!isset($item['url'])) {
                 $item['url'] = '';
             }
+            $urls = explode(DIRECTORY_SEPARATOR, $item['url'] );
+            if (count($urls) === 2) {
+                $urls[] = 'default';
+                $urls[] = 'index';
+                $item['url']  = implode(DIRECTORY_SEPARATOR, $urls);
+            }
             $breadcrumbs[] = empty($item['url']) ? ArrayHelper::getValue($item, 'label') :$this->getLabel($item);
             // 当url参数 等于当前访问 url 路径,递归结束
             if ($item['url'] === $path) {
@@ -212,8 +233,7 @@ class Menu extends Component
      */
     public function getBreadcrumb()
     {
-        $currentUrl = parse_url(\Yii::$app->request->absoluteUrl);
-        $path = isset($currentUrl['path']) ? $currentUrl['path'] : '/';
+        $path = DIRECTORY_SEPARATOR . \Yii::$app->controller->uniqueId . DIRECTORY_SEPARATOR . \Yii::$app->controller->action->id;
         return $this->menusBreadcrumb($this->menus, $path);
     }
 

@@ -63,7 +63,7 @@ trait Controller
                 $data[$key] = $param;
             }
         }
-        if (empty(array_filter($data))) {
+        if (array_filter($data)) {
             $this->invalidParamException();
         }
         return $data;

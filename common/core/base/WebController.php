@@ -9,8 +9,10 @@
 namespace common\core\base;
 
 
+use common\core\behaviors\Permission;
 use common\core\server\ActiveRecord;
 use yii\base\Module;
+use yii\helpers\ArrayHelper;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 
@@ -22,6 +24,18 @@ class WebController extends \yii\web\Controller
     public function __construct($id, Module $module, array $config = [])
     {
         parent::__construct($id, $module, $config);
+    }
+
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors = ArrayHelper::merge($behaviors, [
+            [
+                'class'      => Permission::className(),
+                'isValidate' => false,
+            ],
+        ]);
+        return $behaviors;
     }
 
     /**
