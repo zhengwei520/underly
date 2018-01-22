@@ -79,6 +79,10 @@ class Menu extends Component
      */
     private $status = false;
 
+    public $defaultController = 'default';
+
+    public $defaultAction = 'index';
+
     /**
      * 初始化
      */
@@ -208,13 +212,15 @@ class Menu extends Component
             }
             $urls = explode(DIRECTORY_SEPARATOR, $item['url'] );
             if (count($urls) === 2) {
-                $urls[] = 'default';
-                $urls[] = 'index';
+                $urls[] = $this->defaultController;
+                $urls[] = $this->defaultAction;
                 $item['url']  = implode(DIRECTORY_SEPARATOR, $urls);
             }
             $breadcrumbs[] = empty($item['url']) ? ArrayHelper::getValue($item, 'label') :$this->getLabel($item);
             // 当url参数 等于当前访问 url 路径,递归结束
-            if ($item['url'] === $path) {
+            //$item['url'] === $path
+            $include = ArrayHelper::getValue($item, 'include', []);
+            if ($item['url'] === $path || in_array($path, $include) || count(array_intersect( explode(DIRECTORY_SEPARATOR, $item['url']),  explode(DIRECTORY_SEPARATOR, $path) )) > 1) {
                 $this->status = true;
                 break;
             }
