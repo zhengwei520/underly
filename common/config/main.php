@@ -14,6 +14,9 @@ return [
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
         ],
+        'assetManager' => [
+            'linkAssets' => true,
+        ],
     ],
     'container'  => [
         'singletons' => \common\helpers\DiHelper::di(),

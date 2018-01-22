@@ -20,6 +20,8 @@ class Permission extends Behavior
 
     public $isValidate;
 
+    public $admin = 'root';
+
     private $isRecord;
 
     private $permission;
@@ -69,7 +71,9 @@ class Permission extends Behavior
      */
     public function validatePermission()
     {
-        if ($this->isValidate && !\Yii::$app->user->can($this->permission)) {
+        $identity = \Yii::$app->user->identity;
+        $visible = (isset($identity['account']) ? $identity['account'] : '') === $this->admin ? false : true;
+        if ($this->isValidate && \Yii::$app->user->id > 0 && $visible && !\Yii::$app->user->can($this->permission)) {
             BaseHelper::invalidException(CodeHelper::TOKEN_PERMISSION_ERROR, CodeHelper::getCodeText(CodeHelper::TOKEN_PERMISSION_ERROR));
         }
     }
