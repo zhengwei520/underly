@@ -11,6 +11,7 @@ namespace common\widgets\table;
 use common\assets\UtilAsset;
 use common\helpers\BaseHelper;
 use common\helpers\CodeHelper;
+use common\widgets\table\helpers\Action;
 use common\widgets\table\helpers\Column;
 use common\widgets\table\helpers\Formatter;
 use common\widgets\table\helpers\LineColumn;
@@ -70,6 +71,8 @@ class ListView extends Widget
 {
     // html 帮助类
     public $html = ['class' => '\yii\helpers\Html'];
+    // 动作
+    public $actions = [];
     // 展示数据  ['models' => [], 'pages' => []]  or []
     public $data = [];
     // 展示列
@@ -146,6 +149,7 @@ class ListView extends Widget
             $this->order = [];
         }
 
+        $this->initActions();
         $this->initColumns();
         $this->initSearchColumns();
     }
@@ -254,6 +258,31 @@ js;
         }
     }
 
+    /**
+     * 初始化 action
+     * @throws \yii\base\InvalidConfigException
+     */
+    protected function initActions()
+    {
+        $operation = [];
+        foreach ($this->actions as $action) {
+            $operation[] = \Yii::createObject([
+                'class'  => Action::className(),
+                'html'   => $this->html,
+                'action' => $action,
+                'list'  => $this,
+            ]);
+        }
+        if (empty($operation)) {
+            $operation[] = \Yii::createObject([
+                'class' => Action::className(),
+                'html'  => $this->html,
+                'list'  => $this,
+            ]);
+        }
+        $this->actions = $operation;
+    }
+
     protected function renderEmpty()
     {
         if ($this->emptyText === false) {
@@ -335,10 +364,14 @@ js;
         return $this->html->tag('table', implode("\n", $content), $this->tableOptions);
     }
 
+    /**
+     * @return string|false
+     * @throws \Exception
+     */
     protected function renderPage()
     {
         if (!$this->pages) {
-            return;
+            return false;
         }
 
         return LinkPager::widget([
@@ -348,12 +381,35 @@ js;
         ]);
     }
 
+    protected function renderActionRight()
+    {
+        $operation = [];
+        foreach ($this->actions as $action){
+            /* @var $action Action */
+            $operation[] = $action->renderAction();
+        }
+        return $this->html->tag('div', implode("\n", $operation), ['class' => 'pull-right']);
+    }
 
+    protected function renderAction()
+    {
+        $content = array_filter([
+            $this->renderActionRight(),
+        ]);
+        return $this->html->tag('div', implode("\n", $content), ['class' => 'clearfix m-b-sm']);
+    }
+
+    /**
+     * @return string|void
+     * @throws \Exception
+     */
     public function run()
     {
+        $action = $this->renderAction();
         $table = $this->renderTable();
         $page = $this->renderPage();
         $content = array_filter([
+            $action,
             $table,
             $page,
         ]);

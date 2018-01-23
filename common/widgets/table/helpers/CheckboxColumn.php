@@ -31,7 +31,6 @@ class CheckboxColumn extends Column
             $this->header = $this->html->tag('input', '', ArrayHelper::merge($this->selectionOption, [
                 'type'  => 'checkbox',
                 'class' => 'select-on-check-all',
-                'name'  => $this->name . '_all',
             ]));
         }
         $this->registerClientScript();
