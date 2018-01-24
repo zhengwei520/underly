@@ -117,7 +117,7 @@ class LinkPager extends Widget
      */
     public $disableCurrentPageButton = false;
 
-    public $html = ['class' => '\yii\helpers\Html'];
+    public $html = ['class' => '\common\helpers\Html'];
 
     public $hideSelectPageSize = false;
 

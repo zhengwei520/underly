@@ -70,7 +70,7 @@ use yii\helpers\ArrayHelper;
 class ListView extends Widget
 {
     // html 帮助类
-    public $html = ['class' => '\yii\helpers\Html'];
+    public $html = ['class' => '\common\helpers\Html'];
     // 动作
     public $actions = [];
     // 展示数据  ['models' => [], 'pages' => []]  or []

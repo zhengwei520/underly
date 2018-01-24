@@ -10,15 +10,19 @@ namespace common\core\models;
 
 class Role extends \common\core\server\ActiveRecord
 {
+    public static function tableName()
+    {
+        return '{{%auth_item}}';
+    }
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['name', 'description'], 'required'],
+            [['name'], 'required'],
             [['name'], 'string', 'max' => 64],
-            [['children'], 'each', 'rule' => ['string', 'max' => '64']],
             [['description', 'rule'], 'string'],
         ];
     }
@@ -31,7 +35,6 @@ class Role extends \common\core\server\ActiveRecord
         return [
             'name'        => '名称',
             'description' => '描述',
-            'children'    => '子级',
             'rule'        => '规则',
         ];
     }

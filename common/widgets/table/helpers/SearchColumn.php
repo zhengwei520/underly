@@ -16,7 +16,7 @@ use yii\helpers\ArrayHelper;
 class SearchColumn extends BaseObject
 {
 
-    public $html = ['class' => '\yii\helpers\Html'];
+    public $html = ['class' => '\common\helpers\Html'];
 
     public $name;
 

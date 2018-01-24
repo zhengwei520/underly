@@ -18,7 +18,7 @@ use yii\helpers\Url;
 
 class Action extends BaseObject
 {
-    public $html = ['class' => '\yii\helpers\Html'];
+    public $html = ['class' => '\common\helpers\Html'];
 
     public $list;
 

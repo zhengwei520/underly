@@ -22,7 +22,7 @@ use yii\helpers\Inflector;
 class Column extends BaseObject
 {
 
-    public $html = ['class' => '\yii\helpers\Html'];
+    public $html = ['class' => '\common\helpers\Html'];
 
     public $list;
 

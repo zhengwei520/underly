@@ -11,7 +11,7 @@ namespace common\widgets\table\helpers;
 
 class Formatter extends \yii\i18n\Formatter
 {
-    public $html = ['class' => '\yii\helpers\Html'];
+    public $html = ['class' => '\common\helpers\Html'];
 
     /**
      * @throws \yii\base\InvalidConfigException

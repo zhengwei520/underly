@@ -1,7 +1,7 @@
 <?php
 
 \common\hplus\assets\HplusAsset::register($this);
-\common\widgets\SweetAlert::widget();
+\common\widgets\ToastrAlert::widget([]);
 
 $this->beginContent('@app/views/layouts/base.php');
 ?>

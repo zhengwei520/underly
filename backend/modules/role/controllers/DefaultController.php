@@ -3,8 +3,9 @@
 namespace backend\modules\role\controllers;
 
 use backend\common\core\base\Controller;
-use server\user\UserInterface;
+use common\core\models\Role;
 use yii\base\Module;
+use yii\helpers\ArrayHelper;
 
 /**
  * Default controller for the `role` module
@@ -13,14 +14,13 @@ class DefaultController extends Controller
 {
 
     private $auth;
-    private $user;
 
-    public function __construct($id, Module $module, UserInterface $user, array $config = [])
+    public function __construct($id, Module $module, array $config = [])
     {
         $this->auth = \Yii::$app->authManager;
-        $this->user = $user;
         parent::__construct($id, $module, $config);
     }
+
 
     /**
      * Renders the index view for the module
@@ -74,13 +74,47 @@ class DefaultController extends Controller
 
         //'role' => $this->auth->getRoles()
 
-//        return $this->render('index', ['role' => $this->auth->getRoles()]);
-        return $this->render('index', ['data' => $this->user->getUser()]);
+//        //$uid = \Yii::$app->user->id;
+//        $uid = 21;
+//        //$this->auth->getRolesByUser($uid)
+//        //
+//
+//        var_dump($this->auth->getPermissionsByUser(21), $this->auth->getPermissionsByUser(22));
+//        die;
+//        var_dump(\Yii::$app->request->post());
+//        die;
+        return $this->render('index', ['role' => $this->auth->getRoles()]);
     }
 
+    public function actionAdd()
+    {
+        $role = new Role();
+        return $this->render('edit', ['model' => $role]);
+    }
+
+    /**
+     * @return string
+     * @throws \yii\base\UserException
+     */
     public function actionEdit()
     {
-        return $this->render('edit');
+        $name = \Yii::$app->request->get('name');
+        $role = $this->auth->getRole($name);
+        if (empty($role)) {
+            $this->invalidParamException();
+        }
+        $obj = new Role();
+        $obj->setAttributes(ArrayHelper::toArray($role), false);
+        return $this->render('edit', ['model' => $obj]);
     }
 
+    public function actionUpdate()
+    {
+        
+    }
+
+    public function actionDelete()
+    {
+
+    }
 }
