@@ -54,17 +54,10 @@ class BaseHelper
     {
         $data = [];
         foreach ($params as $id => $text) {
-            if (count($params) === 1) {
-                $data = [
-                    'id'   => $id,
-                    'text' => $text,
-                ];
-            } else {
-                $data[] = [
-                    'id'   => $id,
-                    'text' => $text,
-                ];
-            }
+            $data[] = [
+                'id'   => $id,
+                'text' => $text,
+            ];
         }
         return $data;
     }

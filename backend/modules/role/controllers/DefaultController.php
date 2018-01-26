@@ -4,8 +4,11 @@ namespace backend\modules\role\controllers;
 
 use backend\common\core\base\Controller;
 use common\core\models\Role;
+use common\helpers\BaseHelper;
 use yii\base\Module;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
+use yii\web\NotFoundHttpException;
 
 /**
  * Default controller for the `role` module
@@ -74,22 +77,47 @@ class DefaultController extends Controller
 
         //'role' => $this->auth->getRoles()
 
-//        //$uid = \Yii::$app->user->id;
-//        $uid = 21;
-//        //$this->auth->getRolesByUser($uid)
-//        //
-//
-//        var_dump($this->auth->getPermissionsByUser(21), $this->auth->getPermissionsByUser(22));
-//        die;
-//        var_dump(\Yii::$app->request->post());
-//        die;
+        //        //$uid = \Yii::$app->user->id;
+        //        $uid = 21;
+        //        //$this->auth->getRolesByUser($uid)
+        //        //
+        //
+        //        var_dump($this->auth->getPermissionsByUser(21), $this->auth->getPermissionsByUser(22));
+
         return $this->render('index', ['role' => $this->auth->getRoles()]);
     }
 
     public function actionAdd()
     {
         $role = new Role();
-        return $this->render('edit', ['model' => $role]);
+        return $this->render('edit', $this->getRoleData($role));
+    }
+
+    protected function asArray(array $roles, $name, array $childRoles = [])
+    {
+        $data = [];
+        foreach ($roles as $key => $role) {
+            if (isset($childRoles[$key]) || (string)$key === $name) {
+                continue;
+            }
+            $name = ArrayHelper::getValue($role, 'name');
+            $data[$name] = $name;
+        }
+        return BaseHelper::formattingDataForJson($data);
+    }
+
+    protected function getRoleData($role, $type = '')
+    {
+        $childRoles = $role->name ? $this->auth->getChildRoles($role->name) : [];
+        $childPermission = $role->name ? $this->auth->getPermissionsByRole($role->name) : [];
+        return [
+            'type'            => \Yii::$app->request->get('type', $type),
+            'model'           => $role,
+            'roleLeft'        => $this->asArray($this->auth->getRoles(), $role->name, $childRoles),
+            'roleRight'       => $this->asArray($childRoles, $role->name),
+            'permissionLeft'  => $this->asArray($this->auth->getPermissions(), '', $childPermission),
+            'permissionRight' => $childPermission,
+        ];
     }
 
     /**
@@ -105,16 +133,34 @@ class DefaultController extends Controller
         }
         $obj = new Role();
         $obj->setAttributes(ArrayHelper::toArray($role), false);
-        return $this->render('edit', ['model' => $obj]);
+        return $this->render('edit', $this->getRoleData($obj));
     }
 
+    /**
+     * @return string|\yii\web\Response
+     * @throws \Exception
+     */
     public function actionUpdate()
     {
-        
+        $this->isPost();
+        $params = \Yii::$app->request->post();
+        $role = new Role();
+        $role->load($params);
+        if ($role->load($params) &&
+            $role->validate(['name', 'description'])) {
+            $message = '保存成功';
+            $auth = $this->auth->createRole($role->name);
+            $auth->description = $role->description;
+            $this->auth->getRole($role->name) ? $this->auth->update($role->name, $auth) : $this->auth->add($auth);
+            $this->successAlert($message);
+            return $this->redirect(Url::to(['index']), true);
+        }
+        return $this->render('edit', $this->getRoleData($role));
     }
 
     public function actionDelete()
     {
-
+        $this->successAlert('删除成功');
+        return $this->redirect(Url::to(['index']), true);
     }
 }

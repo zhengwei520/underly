@@ -32,24 +32,34 @@ class Controller extends WebController
         \Yii::$app->session->setFlash($type, $message);
     }
 
-    public function success($message)
+    public function successAlert($message)
     {
         $this->alert('success', $message);
     }
 
-    public function info($message)
+    public function infoAlert($message)
     {
         $this->alert('info', $message);
     }
 
-    public function warning($message)
+    public function warningAlert($message)
     {
         $this->alert('warning', $message);
     }
 
-    public function error($message)
+    public function errorAlert($message)
     {
         $this->alert('error', $message);
+    }
+
+    /**
+     * @throws \yii\base\UserException
+     */
+    public function isPost()
+    {
+        if (!\Yii::$app->request->isPost) {
+            $this->invalidRequestException();
+        }
     }
 
     public function redirect($url, $returnPage = false)
