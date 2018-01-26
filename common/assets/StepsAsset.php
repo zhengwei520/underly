@@ -22,6 +22,6 @@ class StepsAsset extends AssetBundle
     ];
 
     public $depends = [
-        
+        'yii\web\YiiAsset',
     ];
 }

@@ -5,7 +5,7 @@ use yii\helpers\ArrayHelper;
 $this->title = '编辑';
 $params = Yii::$app->request->getQueryParams();
 
-$form = \common\widgets\form\ActiveForm::begin([
+$form = \yii\bootstrap\ActiveForm::begin([
     'action' => \yii\helpers\Url::to(ArrayHelper::merge(['update'], $params)),
 ]);
 echo $form->field($model, 'name')->textInput();
@@ -25,7 +25,7 @@ echo \common\widgets\DoubleBox::widget([
     'options'    => ['class' => 'form-group'],
 ]);
 echo \common\helpers\Html::formButton(['index']);
-\common\widgets\form\ActiveForm::end();
+\yii\bootstrap\ActiveForm::end();
 ?>
 
 

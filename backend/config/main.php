@@ -45,6 +45,16 @@ return [
             'rules' => [
             ],
         ],
+        'assetManager' => [
+            'bundles' => [
+                'yii\web\JqueryAsset' => [
+                    'sourcePath' => '@common/hplus/dist',   // 一定不要发布该资源
+                    'js' => [
+                        'js/jquery.min.js',
+                    ]
+                ],
+            ],
+        ],
     ],
     'params'  => $params,
     'modules' => $modules,

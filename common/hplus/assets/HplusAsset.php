@@ -15,13 +15,21 @@ class HplusAsset extends AssetBundle
     public $sourcePath = '@common/hplus/dist';
     
     public $js = [
-        'js/jquery.min.js',
         'js/bootstrap.min.js',
         "js/content.min.js",
     ];
 
-    public $depends = [
-        'common\hplus\assets\HplusLoginAsset'
+    public $css = [
+        'css/font-awesome.min.css',
+        'css/animate.min.css',
+        'css/style.min.css',
     ];
+
+    public $depends = [
+        'yii\web\YiiAsset',
+        'yii\bootstrap\BootstrapAsset',
+    ];
+
+
 
 }

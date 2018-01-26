@@ -21,6 +21,6 @@ class DoubleBoxAsset extends AssetBundle
         'js/boostrap-doublebox/doublebox-bootstrap.js',
     ];
     public $depends = [
-        'common\hplus\assets\HplusAsset'
+        'yii\web\YiiAsset',
     ];
 }

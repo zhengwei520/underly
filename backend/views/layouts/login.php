@@ -1,6 +1,6 @@
 <?php
 
-common\hplus\assets\HplusLoginAsset::register($this);
+common\hplus\assets\HplusAsset::register($this);
 ?>
 
 <?php $this->beginContent('@app/views/layouts/base.php'); ?>

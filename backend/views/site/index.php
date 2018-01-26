@@ -5,9 +5,9 @@ $this->title = '登录';
 
 
 <div>
-    <h1 class="logo-name">心连网</h1>
+    <h1 class="logo-name">Quick</h1>
 </div>
-<h3>欢迎使用 管理系统</h3>
+<h3>欢迎使用 Quick管理系统</h3>
 
 <?php
 $form = \yii\widgets\ActiveForm::begin([
