@@ -81,6 +81,16 @@ trait InvalidException
     }
 
     /**
+     * @throws \yii\base\UserException
+     */
+    public function isPost()
+    {
+        if (!\Yii::$app->request->isPost) {
+            $this->invalidRequestException();
+        }
+    }
+
+    /**
      * 判断字段 是否 存在并且不为空
      *
      * @param array  $params

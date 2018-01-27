@@ -87,12 +87,6 @@ class DefaultController extends Controller
         return $this->render('index', ['role' => $this->auth->getRoles()]);
     }
 
-    public function actionAdd()
-    {
-        $role = new Role();
-        return $this->render('edit', $this->getRoleData($role));
-    }
-
     protected function asArray(array $roles, $name, array $childRoles = [])
     {
         $data = [];
@@ -116,8 +110,15 @@ class DefaultController extends Controller
             'roleLeft'        => $this->asArray($this->auth->getRoles(), $role->name, $childRoles),
             'roleRight'       => $this->asArray($childRoles, $role->name),
             'permissionLeft'  => $this->asArray($this->auth->getPermissions(), '', $childPermission),
-            'permissionRight' => $childPermission,
+            'permissionRight' => $this->asArray($childPermission, $role->name),
+            'params'          => \Yii::$app->request->getQueryParams(),
         ];
+    }
+
+    public function actionAdd()
+    {
+        $role = new Role();
+        return $this->render('edit', $this->getRoleData($role));
     }
 
     /**
@@ -146,13 +147,29 @@ class DefaultController extends Controller
         $params = \Yii::$app->request->post();
         $role = new Role();
         $role->load($params);
-        if ($role->load($params) &&
-            $role->validate(['name', 'description'])) {
-            $message = '保存成功';
+        if ($role->load($params) && $role->validate(['name', 'description'])) {
             $auth = $this->auth->createRole($role->name);
             $auth->description = $role->description;
-            $this->auth->getRole($role->name) ? $this->auth->update($role->name, $auth) : $this->auth->add($auth);
-            $this->successAlert($message);
+            $status = $this->auth->getRole($role->name) ? $this->auth->update($role->name, $auth) : $this->auth->add($auth);
+            if (!empty($status)) {
+                $this->successAlert();
+                $r = $this->auth->getRole($role->name);
+                // 子角色
+                // 先删除已有的角色
+                // 权限
+                $this->auth->removeChildren($this->auth->getRole($role->name));
+                $permissions = ArrayHelper::getValue($params, 'p', []);
+                foreach ($permissions as $permission){
+                    $this->auth->addChild($r, $this->auth->getPermission(($permission)));
+                }
+                $childRoles = ArrayHelper::getValue($params, 'r', []);
+                foreach ($childRoles as $childRole) {
+                    $this->auth->addChild($r, $this->auth->getRole(($childRole)));
+                }
+
+            } else {
+                $this->errorAlert();
+            }
             return $this->redirect(Url::to(['index']), true);
         }
         return $this->render('edit', $this->getRoleData($role));

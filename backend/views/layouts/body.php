@@ -2,8 +2,6 @@
 
 \backend\assets\HplusBodyAsset::register($this);
 
-
-
 $this->beginContent('@app/views/layouts/base.php');
 
 $identity = Yii::$app->user->identity;

@@ -24,7 +24,7 @@ class Controller extends WebController
         if (\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-        return parent::beforeAction($action); 
+        return parent::beforeAction($action);
     }
 
     public function alert($type, $message)
@@ -32,7 +32,7 @@ class Controller extends WebController
         \Yii::$app->session->setFlash($type, $message);
     }
 
-    public function successAlert($message)
+    public function successAlert($message = '保存成功')
     {
         $this->alert('success', $message);
     }
@@ -47,19 +47,9 @@ class Controller extends WebController
         $this->alert('warning', $message);
     }
 
-    public function errorAlert($message)
+    public function errorAlert($message = '保存失败')
     {
         $this->alert('error', $message);
-    }
-
-    /**
-     * @throws \yii\base\UserException
-     */
-    public function isPost()
-    {
-        if (!\Yii::$app->request->isPost) {
-            $this->invalidRequestException();
-        }
     }
 
     public function redirect($url, $returnPage = false)
@@ -67,7 +57,7 @@ class Controller extends WebController
         if ($returnPage) {
             $params = \Yii::$app->request->getQueryParams();
             ArrayHelper::remove($params, 'id');
-            $url = ArrayHelper::merge((array) $url, $params);
+            $url = ArrayHelper::merge((array)$url, $params);
         }
         return parent::redirect($url);
     }

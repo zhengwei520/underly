@@ -3,14 +3,14 @@
 use yii\helpers\ArrayHelper;
 
 $this->title = '编辑';
-$params = Yii::$app->request->getQueryParams();
 
 $form = \yii\bootstrap\ActiveForm::begin([
     'action' => \yii\helpers\Url::to(ArrayHelper::merge(['update'], $params)),
 ]);
-echo $form->field($model, 'name')->textInput();
+echo $form->field($model, 'name');
 echo $form->field($model, 'description');
 echo \common\widgets\DoubleBox::widget([
+    'name'       => 'r',
     'leftLabel'  => '全部角色',
     'left'       => $roleLeft,
     'rightLabel' => '子角色',
@@ -18,6 +18,7 @@ echo \common\widgets\DoubleBox::widget([
     'options'    => ['class' => 'form-group'],
 ]);
 echo \common\widgets\DoubleBox::widget([
+    'name'       => 'p',
     'leftLabel'  => '全部权限',
     'left'       => $permissionLeft,
     'rightLabel' => '权限',

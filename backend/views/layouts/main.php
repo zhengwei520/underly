@@ -1,6 +1,6 @@
 <?php
 
-\common\hplus\assets\HplusAsset::register($this);
+\common\hplus\assets\HplusMainAsset::register($this);
 \common\widgets\ToastrAlert::widget([]);
 
 $this->beginContent('@app/views/layouts/base.php');

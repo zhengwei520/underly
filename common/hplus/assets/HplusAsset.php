@@ -14,11 +14,6 @@ class HplusAsset extends AssetBundle
 {
     public $sourcePath = '@common/hplus/dist';
     
-    public $js = [
-        'js/bootstrap.min.js',
-        "js/content.min.js",
-    ];
-
     public $css = [
         'css/font-awesome.min.css',
         'css/animate.min.css',
