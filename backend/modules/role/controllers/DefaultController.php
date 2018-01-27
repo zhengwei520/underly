@@ -81,8 +81,8 @@ class DefaultController extends Controller
         //        //
         //
         //        var_dump($this->auth->getPermissionsByUser(21), $this->auth->getPermissionsByUser(22));
-
-        return $this->render('index', ['role' => $this->auth->getRoles()]);
+        $role = new Role();
+        return $this->render('index', ['role' => $role->getRoles()]);
     }
 
     protected function asArray(array $roles, array $excepts = [])
@@ -101,16 +101,14 @@ class DefaultController extends Controller
         return $data;
     }
 
-    protected function getRoleData($model, $type = '')
+    protected function getOtherPermission(Role $model, &$childRoles, &$permissions)
     {
-        $childRoles = $model->name ? $this->auth->getChildRoles($model->name) : [];
-        $childPermission = $model->name ? $this->auth->getPermissionsByRole($model->name) : [];
-        $permissions = $this->asArray($childPermission);
         foreach ($childRoles as $name => $role) {
             if ((string)$name === (string)$model->name) {
+                unset($childRoles[$name]);
                 continue;
             }
-            $rolePermissions = $this->auth->getPermissionsByRole($name);
+            $rolePermissions = $model->getPermissionsByRole($name);
             foreach ($permissions as $key => $permission) {
                 if (isset($rolePermissions[$permission['id']])) {
                     unset($permissions[$key]);
@@ -121,12 +119,20 @@ class DefaultController extends Controller
                 }
             }
         }
+    }
+
+    protected function getRoleData(Role $model)
+    {
+        $childRoles = $model->getChildRoles();
+        $otherRoles = $this->asArray($model->getRoles(), $childRoles);
+        $childPermission = $model->getPermissionsByRole();
+        $permissions = $this->asArray($childPermission);
+        $this->getOtherPermission($model, $childRoles, $permissions);
         return [
-            'type'            => \Yii::$app->request->get('type', $type),
             'model'           => $model,
-            'roleLeft'        => $this->asArray($this->auth->getRoles(), $childRoles),
+            'roleLeft'        => $otherRoles,
             'roleRight'       => $this->asArray($childRoles),
-            'permissionLeft'  => $this->asArray($this->auth->getPermissions(), $childPermission),
+            'permissionLeft'  => $this->asArray($model->getPermissions(), $childPermission),
             'permissionRight' => $permissions,
             'params'          => \Yii::$app->request->getQueryParams(),
         ];
@@ -144,12 +150,9 @@ class DefaultController extends Controller
      */
     public function actionEdit()
     {
-        $name = \Yii::$app->request->get('name');
-        $role = $this->auth->getRole($name);
-        if (empty($role)) {
-            $this->invalidParamException();
-        }
         $obj = new Role();
+        $name = \Yii::$app->request->get('name');
+        $role = $obj->getRoleByName($name);
         $obj->setAttributes(ArrayHelper::toArray($role), false);
         return $this->render('edit', $this->getRoleData($obj));
     }
@@ -163,40 +166,21 @@ class DefaultController extends Controller
         $this->isPost();
         $params = \Yii::$app->request->post();
         $role = new Role();
-        $role->load($params);
         if ($role->load($params) && $role->validate(['name', 'description'])) {
-            $auth = $this->auth->createRole($role->name);
-            $auth->description = $role->description;
-            $status = $this->auth->getRole($role->name) ? $this->auth->update($role->name, $auth) : $this->auth->add($auth);
-            if (!empty($status)) {
-                $this->successAlert();
-                $r = $this->auth->getRole($role->name);
-                // 子角色
-                // 先删除已有的角色和权限
-                $this->auth->removeChildren($this->auth->getRole($role->name));
-                $childRoles = ArrayHelper::getValue($params, 'r', []);
-                foreach ($childRoles as $childRole) {
-                    if (!$this->auth->hasChild($r, $this->auth->getRole(($childRole))) && (string) $role->name !== $childRole) {
-                        $this->auth->addChild($r, $this->auth->getRole(($childRole)));
-                    }
-                }
-                // 权限
-                $permissions = ArrayHelper::getValue($params, 'p', []);
-                foreach ($permissions as $permission) {
-                    if (!$this->auth->hasChild($r, $this->auth->getPermission(($permission)))) {
-                        $this->auth->addChild($r, $this->auth->getPermission(($permission)));
-                    }
-                }
-            } else {
-                $this->errorAlert();
-            }
+            $role->updateRole($params) ? $this->successAlert() : $this->errorAlert();
             return $this->redirect(Url::to(['index']), true);
         }
         return $this->render('edit', $this->getRoleData($role));
     }
 
+    /**
+     * @return \yii\web\Response
+     * @throws \yii\base\UserException
+     */
     public function actionDelete()
     {
+        $name = \Yii::$app->request->get('name');
+        (new Role())->remove($name);
         $this->successAlert('删除成功');
         return $this->redirect(Url::to(['index']), true);
     }
