@@ -46,13 +46,6 @@ class DoubleBox extends Widget
         }
     }
 
-    /**
-     * <div class="ue-container">
-     * <select multiple="multiple" size="10" name="doublebox" class="demo">
-     * </select>
-     * </div>
-     */
-
     public function renderSelect()
     {
         $name = $this->name ? $this->name : $this->options['id'];

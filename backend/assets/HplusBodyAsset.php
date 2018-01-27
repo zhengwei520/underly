@@ -27,7 +27,7 @@ class HplusBodyAsset extends AssetBundle
         'js/plugins/pace/pace.min.js',
     ];
     public $depends = [
-        'common\hplus\assets\HplusAsset'
+        'common\hplus\assets\HplusMainAsset'
     ];
 
 }

@@ -4,11 +4,9 @@ namespace backend\modules\role\controllers;
 
 use backend\common\core\base\Controller;
 use common\core\models\Role;
-use common\helpers\BaseHelper;
 use yii\base\Module;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
-use yii\web\NotFoundHttpException;
 
 /**
  * Default controller for the `role` module
@@ -87,30 +85,49 @@ class DefaultController extends Controller
         return $this->render('index', ['role' => $this->auth->getRoles()]);
     }
 
-    protected function asArray(array $roles, $name, array $childRoles = [])
+    protected function asArray(array $roles, array $excepts = [])
     {
         $data = [];
         foreach ($roles as $key => $role) {
-            if (isset($childRoles[$key]) || (string)$key === $name) {
+            if (isset($excepts[$key])) {
                 continue;
             }
             $name = ArrayHelper::getValue($role, 'name');
-            $data[$name] = $name;
+            $data[] = [
+                'id'   => $name,
+                'text' => $name,
+            ];
         }
-        return BaseHelper::formattingDataForJson($data);
+        return $data;
     }
 
-    protected function getRoleData($role, $type = '')
+    protected function getRoleData($model, $type = '')
     {
-        $childRoles = $role->name ? $this->auth->getChildRoles($role->name) : [];
-        $childPermission = $role->name ? $this->auth->getPermissionsByRole($role->name) : [];
+        $childRoles = $model->name ? $this->auth->getChildRoles($model->name) : [];
+        $childPermission = $model->name ? $this->auth->getPermissionsByRole($model->name) : [];
+        $permissions = $this->asArray($childPermission);
+        foreach ($childRoles as $name => $role) {
+            if ((string)$name === (string)$model->name) {
+                continue;
+            }
+            $rolePermissions = $this->auth->getPermissionsByRole($name);
+            foreach ($permissions as $key => $permission) {
+                if (isset($rolePermissions[$permission['id']])) {
+                    unset($permissions[$key]);
+                    array_push($permissions, [
+                        'id'   => $permission['id'],
+                        'text' => $permission['id'] . '(' . $name . ')',
+                    ]);
+                }
+            }
+        }
         return [
             'type'            => \Yii::$app->request->get('type', $type),
-            'model'           => $role,
-            'roleLeft'        => $this->asArray($this->auth->getRoles(), $role->name, $childRoles),
-            'roleRight'       => $this->asArray($childRoles, $role->name),
-            'permissionLeft'  => $this->asArray($this->auth->getPermissions(), '', $childPermission),
-            'permissionRight' => $this->asArray($childPermission, $role->name),
+            'model'           => $model,
+            'roleLeft'        => $this->asArray($this->auth->getRoles(), $childRoles),
+            'roleRight'       => $this->asArray($childRoles),
+            'permissionLeft'  => $this->asArray($this->auth->getPermissions(), $childPermission),
+            'permissionRight' => $permissions,
             'params'          => \Yii::$app->request->getQueryParams(),
         ];
     }
@@ -155,18 +172,21 @@ class DefaultController extends Controller
                 $this->successAlert();
                 $r = $this->auth->getRole($role->name);
                 // 子角色
-                // 先删除已有的角色
-                // 权限
+                // 先删除已有的角色和权限
                 $this->auth->removeChildren($this->auth->getRole($role->name));
-                $permissions = ArrayHelper::getValue($params, 'p', []);
-                foreach ($permissions as $permission){
-                    $this->auth->addChild($r, $this->auth->getPermission(($permission)));
-                }
                 $childRoles = ArrayHelper::getValue($params, 'r', []);
                 foreach ($childRoles as $childRole) {
-                    $this->auth->addChild($r, $this->auth->getRole(($childRole)));
+                    if (!$this->auth->hasChild($r, $this->auth->getRole(($childRole))) && (string) $role->name !== $childRole) {
+                        $this->auth->addChild($r, $this->auth->getRole(($childRole)));
+                    }
                 }
-
+                // 权限
+                $permissions = ArrayHelper::getValue($params, 'p', []);
+                foreach ($permissions as $permission) {
+                    if (!$this->auth->hasChild($r, $this->auth->getPermission(($permission)))) {
+                        $this->auth->addChild($r, $this->auth->getPermission(($permission)));
+                    }
+                }
             } else {
                 $this->errorAlert();
             }

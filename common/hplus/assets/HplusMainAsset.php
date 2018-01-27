@@ -16,7 +16,6 @@ class HplusMainAsset extends AssetBundle
 
     public $js = [
         'js/bootstrap.min.js',
-        "js/content.min.js",
     ];
     
     public $depends = [

@@ -35,7 +35,7 @@ class ActionColumn extends Column
 
         if ($this->defaultActions === null) {
             $this->defaultActions = [
-                'edit' => [
+                'edit'   => [
                     'title'   => '编辑',
                     'url'     => 'edit',
                     'visible' => true,
@@ -83,9 +83,9 @@ class ActionColumn extends Column
             }
             $id = ArrayHelper::getValue($action, 'id', $this->list->id);
             $model = ArrayHelper::getValue($this->list->models, $this->index, []);
-            $href = ArrayHelper::merge($url, ArrayHelper::merge([
+            $href = ArrayHelper::merge($url, ArrayHelper::merge(\Yii::$app->request->getQueryParams(), [
                 $id => ArrayHelper::getValue($model, $id),
-            ], \Yii::$app->request->getQueryParams()));
+            ]));
             $data[] = $this->html->tag($this->type, $content, ArrayHelper::merge($option, [
                 'href'  => Url::to($href),
                 'title' => $title,
